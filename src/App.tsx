@@ -1,11 +1,7 @@
+import Pages from "./routes";
 
 function App() {
-
-  return (
-    <>
-     <p className="text-3xl">hello</p>
-    </>
-  )
+  return <Pages />;
 }
 
-export default App
+export default App;
