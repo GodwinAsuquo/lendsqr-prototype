@@ -4,10 +4,13 @@ import * as Yup from "yup";
 import logo from "@/assets/images/logo.png";
 import authImage from "@/assets/images/authImage.png";
 import type { SignInFormValues } from "@/types";
+import { useNavigate } from "react-router-dom";
+import { PRIVATE_PATHS } from "@/utils/constants";
 
 
 const SignIn: React.FC = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
+  const navigate = useNavigate()
 
   const validationSchema = Yup.object({
     email: Yup.string()
@@ -31,6 +34,7 @@ const SignIn: React.FC = () => {
       { setSubmitting }: FormikHelpers<SignInFormValues>
     ) => {
       console.log("Form submitted:", values);
+      navigate(PRIVATE_PATHS.USERS)
       setTimeout(() => {
         setSubmitting(false);
       }, 1000);
@@ -40,12 +44,12 @@ const SignIn: React.FC = () => {
   return (
     <section className="flex min-h-screen w-full">
       {/* left section */}
-      <div className="hidden lg:flex lg:w-1/2 xl:w-[55%] bg-white items-center justify-center px-8 xl:px-16">
+      <div className="hidden lg:flex lg:w-1/2  bg-[#FCFCFC] items-center justify-center px-8 xl:px-16">
         <div className="max-w-[600px] w-full">
           <img
             src={logo}
             alt="Lendsqr logo"
-            className="mb-12 xl:mb-16 h-7 xl:h-8"
+            className="mb-12 xl:mb-40 h-7 xl:h-8"
           />
           <img
             src={authImage}
@@ -56,7 +60,7 @@ const SignIn: React.FC = () => {
       </div>
 
       {/* right section */}
-      <div className="w-full lg:w-1/2 xl:w-[45%] flex items-center justify-center px-6 sm:px-10 md:px-16 lg:px-12 xl:px-20 bg-white border border-[545F7D]/15">
+      <div className="w-full lg:w-1/2 xl:w-[45%] flex items-center justify-center px-6 sm:px-10 md:px-16 lg:px-12 xl:px-20 bg-white">
         <div className="w-full max-w-[447px]">
           {/* Mobile logo */}
           <img src={logo} alt="Lendsqr logo" className="lg:hidden mb-12 h-7" />
@@ -65,7 +69,7 @@ const SignIn: React.FC = () => {
             <h1 className="text-[#213F7D] text-[32px] sm:text-[36px] lg:text-[40px] font-bold mb-2 lg:mb-3 leading-tight">
               Welcome!
             </h1>
-            <p className="text-[#545F7D] text-lg sm:text-xl font-normal">
+            <p className="text-[#545F7D] text-lg sm:text-xl font-light">
               Enter details to login.
             </p>
           </div>
@@ -129,9 +133,9 @@ const SignIn: React.FC = () => {
             <div>
               <a
                 href="#"
-                className="text-[#39CDCC] text-xs font-semibold uppercase tracking-wide hover:text-[#2eb8b7] transition-colors inline-block"
+                className="text-[#39CDCC] text-xs font-medium uppercase tracking-wide hover:text-[#2eb8b7] transition-colors inline-block"
               >
-                Forgot Password?
+                input any valid email and password, then click on login
               </a>
             </div>
 

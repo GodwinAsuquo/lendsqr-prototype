@@ -8,6 +8,8 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { useNavigate } from "react-router-dom";
+import { PUBLIC_PATHS } from "@/utils/constants";
 
 interface TopNavProps {
   isCollapsed: boolean;
@@ -16,6 +18,7 @@ interface TopNavProps {
 
 const TopNav = ({ isCollapsed, setIsCollapsed }: TopNavProps) => {
   const [searchQuery, setSearchQuery] = useState("");
+  const navigate = useNavigate()
 
   const userDetails = {
     name: "Adedeji",
@@ -80,6 +83,7 @@ const TopNav = ({ isCollapsed, setIsCollapsed }: TopNavProps) => {
             aria-label="Notifications"
           >
             <IoNotificationsOutline className="w-6 h-6 text-[#213F7D]" />
+            <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
           </button>
 
           {/* User Profile Dropdown */}
@@ -117,7 +121,8 @@ const TopNav = ({ isCollapsed, setIsCollapsed }: TopNavProps) => {
                   Settings
                 </button>
               </div>
-              <div className="border-t border-gray-100">
+              <div onClick={()=>navigate(PUBLIC_PATHS.SIGNIN)} className="border-t border-gray-100">
+                
                 <button className="w-full text-left px-4 py-2 text-sm text-red-500 hover:bg-red-50 transition-colors">
                   Logout
                 </button>

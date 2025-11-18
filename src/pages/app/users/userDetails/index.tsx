@@ -2,8 +2,9 @@ import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { IoArrowBack } from "react-icons/io5";
 import { FaStar, FaRegStar } from "react-icons/fa";
-import type { UserDetailsData } from "@/types";
 import { tabs } from "@/utils/constants";
+import { useUsers } from "@/services/query/useUsers";
+import type { Guarantor, UserData } from "@/types";
 
 
 
@@ -12,48 +13,16 @@ const UserDetails = () => {
   const { id } = useParams();
   const [activeTab, setActiveTab] = useState("general");
 
- const userData: UserDetailsData = {
-   id: id || "1",
-   fullName: "Grace Effiom",
-   username: "LSQFf587g90",
-   accountNumber: "9912345678",
-   tier: 2,
-   balance: "₦200,000.00",
-   bankName: "Providus Bank",
-   phoneNumber: "07060780922",
-   email: "grace@gmail.com",
-   bvn: "07060780922",
-   gender: "Female",
-   maritalStatus: "Single",
-   children: "None",
-   typeOfResidence: "Parent's Apartment",
-   levelOfEducation: "B.Sc",
-   employmentStatus: "Employed",
-   sectorOfEmployment: "FinTech",
-   durationOfEmployment: "2 years",
-   officeEmail: "grace@lendsqr.com",
-   monthlyIncome: "₦200,000.00- ₦400,000.00",
-   loanRepayment: "40,000",
-   twitter: "@grace_effiom",
-   facebook: "Grace Effiom",
-   instagram: "@grace_effiom",
-   guarantors: [
-     {
-       fullName: "Debby Ogana",
-       phoneNumber: "07060780922",
-       email: "debby@gmail.com",
-       relationship: "Sister",
-     },
-     {
-       fullName: "Debby Ogana",
-       phoneNumber: "07060780922",
-       email: "debby@gmail.com",
-       relationship: "Sister",
-     },
-   ],
- };
-  
+  const { data: users, isLoading } = useUsers();
 
+  if (isLoading) return <p>Loading...</p>;
+
+  const userData:UserData = users?.find((u: UserData) => String(u.id) === String(id));
+
+  if (!userData) return <p>User not found</p>;
+
+
+  
   const renderStars = (count: number) => {
     return (
       <div className="flex gap-1">
@@ -87,11 +56,11 @@ const UserDetails = () => {
           <h1 className="text-2xl font-medium text-[#213F7D] mb-4 lg:mb-0">
             User Details
           </h1>
-          <div className="flex gap-4">
-            <button className="px-5 py-3 border border-[#E4033B] text-[#E4033B] rounded-lg text-sm font-semibold tracking-wider hover:bg-red-50 transition-colors">
+          <div className="flex justify-between gap-4 ">
+            <button className="px-5 py-2 border border-[#E4033B] text-[#E4033B] rounded-lg text-xs md:text-sm font-semibold tracking-wider hover:bg-red-50 transition-colors">
               BLACKLIST USER
             </button>
-            <button className="px-5 py-3 border border-[#39CDCC] text-[#39CDCC] rounded-lg text-sm font-semibold tracking-wider hover:bg-teal-50 transition-colors">
+            <button className="px-5 py-2 border border-[#39CDCC] text-[#39CDCC] rounded-lg text-xs md:text-sm font-semibold tracking-wider hover:bg-teal-50 transition-colors">
               ACTIVATE USER
             </button>
           </div>
@@ -124,11 +93,9 @@ const UserDetails = () => {
               </div>
               <div>
                 <h2 className="text-xl font-medium text-[#213F7D]">
-                  {userData.fullName}
+                  {userData.personalInformation.fullName}
                 </h2>
-                <p className="text-sm text-[#545F7D] mt-1">
-                  {userData.username}
-                </p>
+                <p className="text-sm text-[#545F7D] mt-1">LSQFf587g90</p>
               </div>
             </div>
 
@@ -138,7 +105,7 @@ const UserDetails = () => {
             {/* User's Tier */}
             <div>
               <p className="text-sm text-[#545F7D] mb-2">User's Tier</p>
-              {renderStars(userData.tier)}
+              {renderStars(2)}
             </div>
 
             {/* Divider */}
@@ -147,10 +114,10 @@ const UserDetails = () => {
             {/* Balance */}
             <div>
               <h3 className="text-xl font-medium text-[#213F7D]">
-                {userData.balance}
+                ₦200,000.00
               </h3>
               <p className="text-xs text-[#213F7D] mt-1">
-                {userData.accountNumber}/{userData.bankName}
+                9912345678/Providus Bank
               </p>
             </div>
           </div>
@@ -189,7 +156,7 @@ const UserDetails = () => {
                         Full Name
                       </p>
                       <p className="text-sm font-medium text-[#545F7D]">
-                        {userData.fullName}
+                        {userData.personalInformation.fullName}
                       </p>
                     </div>
                     <div>
@@ -197,7 +164,7 @@ const UserDetails = () => {
                         Phone Number
                       </p>
                       <p className="text-sm font-medium text-[#545F7D]">
-                        {userData.phoneNumber}
+                        {userData.personalInformation.phoneNumber}
                       </p>
                     </div>
                     <div>
@@ -205,7 +172,7 @@ const UserDetails = () => {
                         Email Address
                       </p>
                       <p className="text-sm font-medium text-[#545F7D]">
-                        {userData.email}
+                        {userData.personalInformation.emailAddress}
                       </p>
                     </div>
                     <div>
@@ -213,7 +180,7 @@ const UserDetails = () => {
                         BVN
                       </p>
                       <p className="text-sm font-medium text-[#545F7D]">
-                        {userData.bvn}
+                        {userData.personalInformation.bvn}
                       </p>
                     </div>
                     <div>
@@ -221,7 +188,7 @@ const UserDetails = () => {
                         Gender
                       </p>
                       <p className="text-sm font-medium text-[#545F7D]">
-                        {userData.gender}
+                        {userData.personalInformation.gender}
                       </p>
                     </div>
                     <div>
@@ -229,7 +196,7 @@ const UserDetails = () => {
                         Marital Status
                       </p>
                       <p className="text-sm font-medium text-[#545F7D]">
-                        {userData.maritalStatus}
+                        {userData.personalInformation.maritalStatus}
                       </p>
                     </div>
                     <div>
@@ -237,7 +204,7 @@ const UserDetails = () => {
                         Children
                       </p>
                       <p className="text-sm font-medium text-[#545F7D]">
-                        {userData.children}
+                        {userData.personalInformation.children}
                       </p>
                     </div>
                     <div>
@@ -245,7 +212,7 @@ const UserDetails = () => {
                         Type of Residence
                       </p>
                       <p className="text-sm font-medium text-[#545F7D]">
-                        {userData.typeOfResidence}
+                        {userData.personalInformation.typeOfResidence}
                       </p>
                     </div>
                   </div>
@@ -265,7 +232,7 @@ const UserDetails = () => {
                         Level of Education
                       </p>
                       <p className="text-sm font-medium text-[#545F7D]">
-                        {userData.levelOfEducation}
+                        {userData.educationAndEmployment.levelOfEducation}
                       </p>
                     </div>
                     <div>
@@ -273,7 +240,7 @@ const UserDetails = () => {
                         Employment Status
                       </p>
                       <p className="text-sm font-medium text-[#545F7D]">
-                        {userData.employmentStatus}
+                        {userData.educationAndEmployment.employmentStatus}
                       </p>
                     </div>
                     <div>
@@ -281,7 +248,7 @@ const UserDetails = () => {
                         Sector of Employment
                       </p>
                       <p className="text-sm font-medium text-[#545F7D]">
-                        {userData.sectorOfEmployment}
+                        {userData.educationAndEmployment.sectorOfEmployment}
                       </p>
                     </div>
                     <div>
@@ -289,7 +256,7 @@ const UserDetails = () => {
                         Duration of Employment
                       </p>
                       <p className="text-sm font-medium text-[#545F7D]">
-                        {userData.durationOfEmployment}
+                        {userData.educationAndEmployment.durationOfEmployment}
                       </p>
                     </div>
                     <div>
@@ -297,7 +264,7 @@ const UserDetails = () => {
                         Office Email
                       </p>
                       <p className="text-sm font-medium text-[#545F7D]">
-                        {userData.officeEmail}
+                        {userData.educationAndEmployment.officeEmail}
                       </p>
                     </div>
                     <div>
@@ -305,7 +272,7 @@ const UserDetails = () => {
                         Monthly Income
                       </p>
                       <p className="text-sm font-medium text-[#545F7D]">
-                        {userData.monthlyIncome}
+                        {userData.educationAndEmployment.monthlyIncome}
                       </p>
                     </div>
                     <div>
@@ -313,7 +280,7 @@ const UserDetails = () => {
                         Loan Repayment
                       </p>
                       <p className="text-sm font-medium text-[#545F7D]">
-                        {userData.loanRepayment}
+                        {userData.educationAndEmployment.loanRepayment}
                       </p>
                     </div>
                   </div>
@@ -333,7 +300,7 @@ const UserDetails = () => {
                         Twitter
                       </p>
                       <p className="text-sm font-medium text-[#545F7D]">
-                        {userData.twitter}
+                        {userData.socials.twitter}
                       </p>
                     </div>
                     <div>
@@ -341,7 +308,7 @@ const UserDetails = () => {
                         Facebook
                       </p>
                       <p className="text-sm font-medium text-[#545F7D]">
-                        {userData.facebook}
+                        {userData.socials.facebook}
                       </p>
                     </div>
                     <div>
@@ -349,7 +316,7 @@ const UserDetails = () => {
                         Instagram
                       </p>
                       <p className="text-sm font-medium text-[#545F7D]">
-                        {userData.instagram}
+                        {userData.socials.instagram}
                       </p>
                     </div>
                   </div>
@@ -363,47 +330,49 @@ const UserDetails = () => {
                   <h3 className="text-base font-medium text-[#213F7D] mb-8">
                     Guarantor
                   </h3>
-                  {userData.guarantors.map((guarantor, index) => (
-                    <div key={index} className={index > 0 ? "mt-8" : ""}>
-                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-y-8 gap-x-6">
-                        <div>
-                          <p className="text-xs text-[#545F7D] uppercase mb-2">
-                            Full Name
-                          </p>
-                          <p className="text-sm font-medium text-[#545F7D]">
-                            {guarantor.fullName}
-                          </p>
+                  {userData?.guarantor.map(
+                    (guarantor: Guarantor, index: number) => (
+                      <div key={index} className={index > 0 ? "mt-8" : ""}>
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-y-8 gap-x-6">
+                          <div>
+                            <p className="text-xs text-[#545F7D] uppercase mb-2">
+                              Full Name
+                            </p>
+                            <p className="text-sm font-medium text-[#545F7D]">
+                              {guarantor.fullName}
+                            </p>
+                          </div>
+                          <div>
+                            <p className="text-xs text-[#545F7D] uppercase mb-2">
+                              Phone Number
+                            </p>
+                            <p className="text-sm font-medium text-[#545F7D]">
+                              {guarantor.phoneNumber}
+                            </p>
+                          </div>
+                          <div>
+                            <p className="text-xs text-[#545F7D] uppercase mb-2">
+                              Email Address
+                            </p>
+                            <p className="text-sm font-medium text-[#545F7D]">
+                              {guarantor.emailAddress}
+                            </p>
+                          </div>
+                          <div>
+                            <p className="text-xs text-[#545F7D] uppercase mb-2">
+                              Relationship
+                            </p>
+                            <p className="text-sm font-medium text-[#545F7D]">
+                              {guarantor.relationship}
+                            </p>
+                          </div>
                         </div>
-                        <div>
-                          <p className="text-xs text-[#545F7D] uppercase mb-2">
-                            Phone Number
-                          </p>
-                          <p className="text-sm font-medium text-[#545F7D]">
-                            {guarantor.phoneNumber}
-                          </p>
-                        </div>
-                        <div>
-                          <p className="text-xs text-[#545F7D] uppercase mb-2">
-                            Email Address
-                          </p>
-                          <p className="text-sm font-medium text-[#545F7D]">
-                            {guarantor.email}
-                          </p>
-                        </div>
-                        <div>
-                          <p className="text-xs text-[#545F7D] uppercase mb-2">
-                            Relationship
-                          </p>
-                          <p className="text-sm font-medium text-[#545F7D]">
-                            {guarantor.relationship}
-                          </p>
-                        </div>
+                        {index === 0 && userData.guarantor.length > 1 && (
+                          <hr className="border-[#213F7D]/10 mt-8" />
+                        )}
                       </div>
-                      {index === 0 && userData.guarantors.length > 1 && (
-                        <hr className="border-[#213F7D]/10 mt-8" />
-                      )}
-                    </div>
-                  ))}
+                    )
+                  )}
                 </div>
               </div>
             )}

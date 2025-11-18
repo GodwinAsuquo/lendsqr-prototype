@@ -3,7 +3,7 @@ import { useLocation, useNavigate, Link } from "react-router-dom";
 import { IoChevronDownOutline } from "react-icons/io5";
 import { HiOutlineHome, HiOutlineLogout } from "react-icons/hi";
 import { FaBriefcase } from "react-icons/fa";
-import { navItems, PRIVATE_PATHS } from "@/utils/constants";
+import { navItems, PRIVATE_PATHS, PUBLIC_PATHS } from "@/utils/constants";
 import { ChevronLeft } from "lucide-react";
 
 interface SideNavProps {
@@ -21,7 +21,7 @@ const SideNav = ({ isCollapsed, setIsCollapsed }: SideNavProps) => {
     if (window.innerWidth < 1024) {
       setIsCollapsed(true);
     }
-    navigate("/signin");
+    navigate(PUBLIC_PATHS.SIGNIN);
   };
 
   // Group navigation items by category

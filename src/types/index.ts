@@ -1,15 +1,7 @@
 // User related types
 export type UserStatus = "Inactive" | "Pending" | "Active" | "Blacklisted";
 
-export interface User {
-  id: string;
-  organization: string;
-  username: string;
-  email: string;
-  phoneNumber: string;
-  dateJoined: string;
-  status: UserStatus;
-}
+
 
 // Auth related types
 export interface SignInFormValues {
@@ -80,21 +72,38 @@ export interface FilterValues {
   status: string;
 }
 
-export interface UserDetailsData {
+// export interface User {
+//   id: string;
+//   organization: string;
+//   username: string;
+//   email: string;
+//   phoneNumber: string;
+//   dateJoined: string;
+//   status: UserStatus;
+// }
+export interface UserData {
   id: string;
+  personalInformation: PersonalInformation;
+  educationAndEmployment: EducationAndEmployment;
+  socials: Socials;
+  guarantor: Guarantor[];
+  organization: string;
+  status: "Blacklisted" | "Active" | "Pending" | "Inactive";
+  dateJoined: string;
+}
+
+export interface PersonalInformation {
   fullName: string;
-  username: string;
-  accountNumber: string;
-  tier: number;
-  balance: string;
-  bankName: string;
   phoneNumber: string;
-  email: string;
+  emailAddress: string;
   bvn: string;
   gender: string;
   maritalStatus: string;
   children: string;
   typeOfResidence: string;
+}
+
+export interface EducationAndEmployment {
   levelOfEducation: string;
   employmentStatus: string;
   sectorOfEmployment: string;
@@ -102,13 +111,17 @@ export interface UserDetailsData {
   officeEmail: string;
   monthlyIncome: string;
   loanRepayment: string;
+}
+
+export interface Socials {
   twitter: string;
   facebook: string;
   instagram: string;
-  guarantors: Array<{
-    fullName: string;
-    phoneNumber: string;
-    email: string;
-    relationship: string;
-  }>;
+}
+
+export interface Guarantor {
+  fullName: string;
+  phoneNumber: string;
+  emailAddress: string;
+  relationship: string;
 }

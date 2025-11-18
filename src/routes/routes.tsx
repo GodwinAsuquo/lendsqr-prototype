@@ -89,7 +89,7 @@ export const PRIVATE_ROUTES: AppRoute[] = [
     element: <Users />,
   },
   {
-    path: USER_DETAILS, 
+    path: USER_DETAILS,
     element: <UserDetails />,
   },
   {
@@ -178,6 +178,6 @@ export const PRIVATE_ROUTES: AppRoute[] = [
   },
   {
     path: "*",
-    element: <Navigate to={DASHBOARD} replace />,
+    element: <Navigate to={USERS} replace />,
   },
 ];

@@ -13,14 +13,32 @@ const PrivateRouteWrapper = () => {
 
 const Pages = () => {
   const location = useLocation();
-  const user = localStorage.getItem("lendsqrUser");
-  return !user ? (
+  const path = location.pathname;
+
+  // condition based on URL
+  if (path === "/signin") {
+    return <PublicRouteWrapper key={path} />;
+  } else if (path === "/users") {
+    return (
       <DashboardLayout>
-        <PrivateRouteWrapper key={location.pathname} />
-   </DashboardLayout>
-  ) : (
-    <PublicRouteWrapper key={location.pathname} />
+        <PrivateRouteWrapper key={path} />
+      </DashboardLayout>
+    );
+  } else return (
+    <DashboardLayout>
+      <PrivateRouteWrapper key={path} />
+    </DashboardLayout>
   );
+
+  // condition based on real life authentication
+  // const user = localStorage.getItem("lendsqrUser");
+  // return user ? (
+  //   <DashboardLayout>
+  //     <PrivateRouteWrapper key={location.pathname} />
+  //   </DashboardLayout>
+  // ) : (
+  //   <PublicRouteWrapper key={location.pathname} />
+  // );
 };
 
 export default Pages;

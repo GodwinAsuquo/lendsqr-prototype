@@ -6,7 +6,7 @@ import {
   IoEyeOutline,
 } from "react-icons/io5";
 import { FiUserX, FiUserCheck } from "react-icons/fi";
-import type { FilterValues, User, UserStatus } from "@/types";
+import type { FilterValues, UserData, UserStatus } from "@/types";
 import {
   Popover,
   PopoverContent,
@@ -15,12 +15,12 @@ import {
 import FilterModal from "./FilterModal";
 
 interface UsersTableProps {
-  users: User[];
+  users: UserData[];
 }
 
 const UsersTable = ({ users }: UsersTableProps) => {
   const navigate = useNavigate();
-  const [filteredUsers, setFilteredUsers] = useState<User[]>(users);
+  const [filteredUsers, setFilteredUsers] = useState<UserData[]>(users);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [isFiltered, setIsFiltered] = useState(false);
@@ -56,17 +56,21 @@ const UsersTable = ({ users }: UsersTableProps) => {
     }
     if (filters.username) {
       filtered = filtered.filter((user) =>
-        user.username.toLowerCase().includes(filters.username.toLowerCase())
+        user.personalInformation.fullName
+          .toLowerCase()
+          .includes(filters.username.toLowerCase())
       );
     }
     if (filters.email) {
       filtered = filtered.filter((user) =>
-        user.email.toLowerCase().includes(filters.email.toLowerCase())
+        user.personalInformation.emailAddress
+          .toLowerCase()
+          .includes(filters.email.toLowerCase())
       );
     }
     if (filters.phoneNumber) {
       filtered = filtered.filter((user) =>
-        user.phoneNumber.includes(filters.phoneNumber)
+        user.personalInformation.phoneNumber.includes(filters.phoneNumber)
       );
     }
     if (filters.status && filters.status !== "all") {
@@ -136,84 +140,41 @@ const UsersTable = ({ users }: UsersTableProps) => {
     return pages;
   };
 
+  const thead = [
+    "Organization",
+    "Username",
+    "Email",
+    "Phone Number",
+    "Date Joined",
+    "Status",
+
+  ];
+
   return (
     <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
       <div className="overflow-x-auto">
         <table className="w-full min-w-[900px]">
           <thead>
             <tr className="border-b border-gray-100">
-              <th className="text-left px-6 py-5 whitespace-nowrap">
-                <div className="flex items-center gap-2">
-                  <span className="text-xs font-semibold text-[#545F7D] uppercase">
-                    Organization
-                  </span>
-                  <FilterModal onFilter={handleFilter} onReset={resetFilter}>
-                    <button className="p-1 hover:bg-gray-100 rounded transition-colors">
-                      <IoFilterSharp className="w-4 h-4 text-[#545F7D]" />
-                    </button>
-                  </FilterModal>
-                </div>
-              </th>
-              <th className="text-left px-6 py-5 whitespace-nowrap">
-                <div className="flex items-center gap-2">
-                  <span className="text-xs font-semibold text-[#545F7D] uppercase">
-                    Username
-                  </span>
-                  <FilterModal onFilter={handleFilter} onReset={resetFilter}>
-                    <button className="p-1 hover:bg-gray-100 rounded transition-colors">
-                      <IoFilterSharp className="w-4 h-4 text-[#545F7D]" />
-                    </button>
-                  </FilterModal>
-                </div>
-              </th>
-              <th className="text-left px-6 py-5 whitespace-nowrap">
-                <div className="flex items-center gap-2">
-                  <span className="text-xs font-semibold text-[#545F7D] uppercase">
-                    Email
-                  </span>
-                  <FilterModal onFilter={handleFilter} onReset={resetFilter}>
-                    <button className="p-1 hover:bg-gray-100 rounded transition-colors">
-                      <IoFilterSharp className="w-4 h-4 text-[#545F7D]" />
-                    </button>
-                  </FilterModal>
-                </div>
-              </th>
-              <th className="text-left px-6 py-5 whitespace-nowrap">
-                <div className="flex items-center gap-2">
-                  <span className="text-xs font-semibold text-[#545F7D] uppercase">
-                    Phone Number
-                  </span>
-                  <FilterModal onFilter={handleFilter} onReset={resetFilter}>
-                    <button className="p-1 hover:bg-gray-100 rounded transition-colors">
-                      <IoFilterSharp className="w-4 h-4 text-[#545F7D]" />
-                    </button>
-                  </FilterModal>
-                </div>
-              </th>
-              <th className="text-left px-6 py-5 whitespace-nowrap">
-                <div className="flex items-center gap-2">
-                  <span className="text-xs font-semibold text-[#545F7D] uppercase">
-                    Date Joined
-                  </span>
-                  <FilterModal onFilter={handleFilter} onReset={resetFilter}>
-                    <button className="p-1 hover:bg-gray-100 rounded transition-colors">
-                      <IoFilterSharp className="w-4 h-4 text-[#545F7D]" />
-                    </button>
-                  </FilterModal>
-                </div>
-              </th>
-              <th className="text-left px-6 py-5 whitespace-nowrap">
-                <div className="flex items-center gap-2">
-                  <span className="text-xs font-semibold text-[#545F7D] uppercase">
-                    Status
-                  </span>
-                  <FilterModal onFilter={handleFilter} onReset={resetFilter}>
-                    <button className="p-1 hover:bg-gray-100 rounded transition-colors">
-                      <IoFilterSharp className="w-4 h-4 text-[#545F7D]" />
-                    </button>
-                  </FilterModal>
-                </div>
-              </th>
+              {thead.map((d, i) => {
+                return (
+                  <th key={i} className="text-left px-6 py-5 whitespace-nowrap">
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs font-semibold text-[#545F7D] uppercase">
+                        {d}
+                      </span>
+                      <FilterModal
+                        onFilter={handleFilter}
+                        onReset={resetFilter}
+                      >
+                        <button className="p-1 hover:bg-gray-100 rounded transition-colors">
+                          <IoFilterSharp className="w-4 h-4 text-[#545F7D]" />
+                        </button>
+                      </FilterModal>
+                    </div>
+                  </th>
+                );
+              })}
               <th className="px-6 py-5"></th>
             </tr>
           </thead>
@@ -256,13 +217,13 @@ const UsersTable = ({ users }: UsersTableProps) => {
                     {user.organization}
                   </td>
                   <td className="px-6 py-5 text-sm text-[#545F7D] whitespace-nowrap">
-                    {user.username}
+                    {user.personalInformation.fullName}
                   </td>
                   <td className="px-6 py-5 text-sm text-[#545F7D] whitespace-nowrap">
-                    {user.email}
+                    {user.personalInformation.emailAddress}
                   </td>
                   <td className="px-6 py-5 text-sm text-[#545F7D] whitespace-nowrap">
-                    {user.phoneNumber}
+                    {user.personalInformation.phoneNumber}
                   </td>
                   <td className="px-6 py-5 text-sm text-[#545F7D] whitespace-nowrap">
                     {user.dateJoined}
