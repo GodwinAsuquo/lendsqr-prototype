@@ -1,4 +1,4 @@
-# Lendsqr Dashboard
+# Lendsqr Prototype
 
 A modern, responsive admin dashboard built with React, TypeScript, and Tailwind CSS. This project showcases a user management system with authentication, filtering, pagination, and detailed user views.
 
